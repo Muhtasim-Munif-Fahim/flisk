@@ -81,7 +81,11 @@ Stop my Flisk stack with flisk down and confirm nothing is left running.
 <details>
 <summary>Connect your agent to Flisk as an MCP server</summary>
 
-Add this to your agent's MCP settings:
+Install the CLI, then add the Flisk MCP server to your agent's settings:
+
+```bash
+npm install -g @flisk-sh/flisk
+```
 
 ```json
 {
@@ -529,7 +533,7 @@ Runnable examples show Flisk on real stacks. Start with the smallest one:
 
 ## Use Flisk with your AI agent
 
-The repository ships agent skills for common Flisk work, including `flisk-doctor` (environment checks) and `flisk-troubleshoot` (fixing `flisk` and Tilt errors), under [`.agents/skills`](.agents/skills). Agents working in this repo also follow [AGENTS.md](AGENTS.md). Use these skills to let your agent check your setup and explain failures instead of guessing at Docker or Tilt configuration.
+The repository ships five agent skills for common Flisk work under [`.agents/skills`](.agents/skills): `flisk-doctor` (environment checks), `flisk-up` (preview and start a stack), `flisk-resource` (create a service), `flisk-status` (health and URLs), and `flisk-troubleshoot` (fixing `flisk` and Tilt errors). Agents working in this repo also follow [AGENTS.md](AGENTS.md). Use these skills to let your agent check your setup and explain failures instead of guessing at Docker or Tilt configuration.
 
 ## Installation
 
@@ -738,3 +742,5 @@ Thank you to everyone who has shipped code, docs, and fixes to Flisk since July 
 Flisk is MIT-licensed; see [LICENSE](LICENSE). The [license boundary](docs/project/GOVERNANCE.md#license-boundary-and-donation-scope) says which code is MIT and which is downloaded with a key.
 
 Project governance: [GOVERNANCE.md](docs/project/GOVERNANCE.md), [MAINTAINERS.md](docs/project/MAINTAINERS.md), [ADOPTERS.md](docs/project/ADOPTERS.md).
+
+<img src='https://raw.githubusercontent.com/flisk-sh/flisk-emoji/main/png/flisk-thunder-64.png' width='20' alt='flisk'> Using Flisk in Slack or Discord? Get the [Flisk green thunder emoji](https://github.com/flisk-sh/flisk-emoji) (SVG and PNG, MIT).

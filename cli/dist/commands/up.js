@@ -24,6 +24,7 @@ import { nativeWindowsStackRefusal } from "../utils/native-windows.js";
 import { findProjectRoot, getPackageVersion } from "../utils/paths.js";
 import { findAvailablePort } from "../utils/port-assignment.js";
 import { formatPortFallbackNotice } from "../utils/port-fallback-notice.js";
+import { findPortOccupant } from "../utils/port-occupant.js";
 import { isApiServiceType } from "../utils/resource-kind.js";
 import { enforceSchemaVersionGate } from "../utils/schema-version-gate.js";
 import { enforceServiceConfigGate, warnSchemaVersions } from "../utils/service-config-checks.js";
@@ -366,8 +367,13 @@ export const upCommand = new Command("up")
                 console.log(chalk.gray(`Refreshed runtime assets: ${copiedAssets.join(", ")}`));
             }
             const newlyEnabledStacks = enableDiscoveredStacks(projectRoot, discoveredResources);
-            if (newlyEnabledStacks.length > 0 && !options.quiet) {
-                console.log(chalk.gray(`Added ${newlyEnabledStacks.join(", ")} to the pre_alpha phase in .flisk/project.json`));
+            if (newlyEnabledStacks.length > 0) {
+                // project.json just changed, so the generated spec.master is now stale. Regenerate it here, or the next
+                // `flisk config verify` reports it out of sync.
+                await generateMasterConfigs(projectRoot, { quiet: options.quiet });
+                if (!options.quiet) {
+                    console.log(chalk.gray(`Added ${newlyEnabledStacks.join(", ")} to the pre_alpha phase in .flisk/project.json`));
+                }
             }
         }
         let servicesToStart;
@@ -605,7 +611,7 @@ export const upCommand = new Command("up")
                             blocked: [],
                             starting: [],
                         };
-                    const reportLines = formatStartupReport(report, readiness.timedOut);
+                    const reportLines = formatStartupReport(report, readiness.timedOut, (port) => findPortOccupant(port));
                     if (reportLines.length > 0) {
                         showError(reportLines.join("\n"));
                     }

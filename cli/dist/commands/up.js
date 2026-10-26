@@ -48,6 +48,7 @@ export function formatUpSuccess(port, appUrls = []) {
             ? appUrls.slice(0, 5).map((url) => `  ${url}`)
             : ["  run: flisk networks"]),
         "Stop: flisk down",
+        "Next: flisk help  # or visit https://flisk.sh/docs",
     ];
 }
 /**
